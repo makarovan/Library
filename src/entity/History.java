@@ -55,10 +55,10 @@ public class History {
     //вывод текста
     @Override
     public String toString() {
-        return "History{" + "\nbook=" + book.toString() 
-                + ",\n\n reader=" + reader.toString() 
-                + ",\n\n givenDate=" + givenDate.toString() 
-                + ",\n returnDate=" + returnDate + "\n}";
+        return "History{" + "\n" + book.toString() 
+                + ",\n\n" + reader.toString() 
+                + ",\n\ngivenDate=" + givenDate.toString() 
+                + ",\nreturnDate=" + returnDate + "\n}";
     }
     
     

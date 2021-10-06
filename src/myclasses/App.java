@@ -60,13 +60,13 @@ public class App {
         //задать сегодняшнюю дату
         Calendar c = new GregorianCalendar();
         history1.setGivenDate(c.getTime());
-        System.out.println("history1 = "+history1.toString());
+        System.out.println(history1.toString());
         //задать дату возврата
         c.add(Calendar.WEEK_OF_YEAR, 2);
         history1.setReturnDate(c.getTime());
         System.out.println("___________________________");
         //вывод
-        System.out.println("history1 = "+history1.toString());
+        System.out.println(history1.toString());
         
         
     }

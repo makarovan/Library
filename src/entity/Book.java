@@ -46,7 +46,7 @@ public class Book {
     //вывод текста
     @Override
     public String toString() {
-        return "Book{" + "caption=" + caption + ", author=" + Arrays.toString(author) + ",\n publishedYear=" + publishedYear + "}";
+        return "Book:" + "\ncaption: " + caption + Arrays.toString(author) + ",\npublishedYear=" + publishedYear + "}";
     }
     
     
