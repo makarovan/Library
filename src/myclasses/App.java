@@ -9,6 +9,7 @@ import entity.Reader;
 import entity.Book;
 import entity.Author;
 import entity.History;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -29,6 +30,7 @@ public class App {
             System.out.println("Выберите задачу");
             System.out.println("0: закончить программу");
             System.out.println("1: добавить книгу");
+            System.out.println("2: Вывести список книг");
             int task = scanner.nextInt();
             scanner.nextLine();
             switch(task){
@@ -42,6 +44,16 @@ public class App {
                         if (books[i]==null) {
                             books[i] = addBook();
                         break;
+                        }
+                        
+                    }
+                    break;
+                case 2:
+                    repeat ="q";
+                    System.out.println("Список книг:");
+                    for (int i = 0; i < books.length; i++) {
+                        if (books[i]!=null){//во избежание ошибки nullpointerexception, когда печатаешь массив из 10 ячеек, но только 2 заполнены
+                           System.out.println(books[i].toString()); 
                         }
                         
                     }

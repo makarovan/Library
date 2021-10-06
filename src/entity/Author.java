@@ -62,7 +62,7 @@ public class Author {
     //вывод текста
     @Override
     public String toString() {
-        return "\nAuthor{" + "name=" + name + ",\nlastname=" + lastname+"}";
+        return "\nAuthor: " + name +" "+ lastname;
         //return "\nAuthor{" + "name=" + name + ",\n lastname=" + lastname + ",\n year=" + year + ",\n day=" + day + ",\n month=" + month + '}';
     }
     
