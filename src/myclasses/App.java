@@ -21,6 +21,7 @@ import java.util.Scanner;
 public class App {
     Scanner scanner = new Scanner(System.in);
     Book[] books = new Book[10];
+    Reader[] readers = new Reader[10];
     
     public App() {
     }
@@ -31,6 +32,8 @@ public class App {
             System.out.println("0: закончить программу");
             System.out.println("1: добавить книгу");
             System.out.println("2: Вывести список книг");
+            System.out.println("3: Добавить читателя");
+            System.out.println("4: Список читателей");
             int task = scanner.nextInt();
             scanner.nextLine();
             switch(task){
@@ -38,6 +41,7 @@ public class App {
                     repeat ="q";
                     System.out.println("Программа закончена");
                     break;
+               
                 case 1: 
                     System.out.println("Добавление книги");
                     for (int i = 0; i < books.length; i++) {
@@ -45,9 +49,9 @@ public class App {
                             books[i] = addBook();
                         break;
                         }
-                        
                     }
                     break;
+                
                 case 2:
                     repeat ="q";
                     System.out.println("Список книг:");
@@ -55,10 +59,27 @@ public class App {
                         if (books[i]!=null){//во избежание ошибки nullpointerexception, когда печатаешь массив из 10 ячеек, но только 2 заполнены
                            System.out.println(books[i].toString()); 
                         }
-                        
                     }
                     break;
-//                default:
+                
+                case 3:
+                    System.out.println("Добавления читателя");
+                    for (int i = 0; i < readers.length; i++) {
+                        if (readers[i]==null) {
+                            readers[i] = addReader();
+                        break;
+                        }
+                    }
+                    break;
+                case 4:
+                    System.out.println("Список читателей");
+                    for (int i = 0; i < readers.length; i++) {
+                        if (readers[i]!=null){//во избежание ошибки nullpointerexception, когда печатаешь массив из 10 ячеек, но только 2 заполнены
+                           System.out.println(readers[i].toString()); 
+                        }
+                    }
+                    break;
+                //default:
 //                    throw new AssernionError();
             }
         }while("y".equals(repeat));
@@ -105,7 +126,16 @@ public class App {
         return book;
     }
             
-            
+    private Reader addReader(){
+        Reader reader = new Reader();
+        System.out.print("Имя читателя: ");
+        reader.setFirstname(scanner.nextLine());
+        System.out.println("Фамилия читателя: ");
+        reader.setLastname(scanner.nextLine());
+        System.out.println("телефон читателя: ");
+        reader.setPhone(scanner.nextLine());
+        return reader;
+    }
             
         //System.out.println("Hello");
 //        Book book1 = new Book();
