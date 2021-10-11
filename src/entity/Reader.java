@@ -43,7 +43,7 @@ public class Reader {
     //вывод текста
     @Override
     public String toString() {
-        return "Reader{\n" + "firstname=" + firstname + ",\nlastname=" + lastname + ",\nphone=" + phone + "}";
+        return "Reader: " + "Имя: " + firstname +" "+ lastname + ",\nтелефон: " + phone;
     }
     
     
