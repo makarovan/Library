@@ -49,14 +49,8 @@ public class App {
                
                 case 1: 
                     System.out.println("Добавление книги");
-                    for (int i = 0; i < books.size(); i++) {
-                        if (books.get(i)==null) {
-                            books.add(addBook());//добавление в список
-                        break;
-                        }
-                    }
+                    books.add(addBook());//добавление в список
                     break;
-                
                 case 2:
                     //repeat ="q";
                     System.out.println("Список книг:");
@@ -69,13 +63,9 @@ public class App {
                 
                 case 3:
                     System.out.println("Добавления читателя");
-                    for (int i = 0; i < readers.size(); i++) {
-                        if (readers.get(i)==null) {
-                            readers.set(i, addReader());
-                        break;
-                        }
-                    }
+                    readers.add(addReader());
                     break;
+                    
                 case 4:
                     System.out.println("Список читателей");
                     for (int i = 0; i < readers.size(); i++) {
@@ -87,12 +77,7 @@ public class App {
                 
                 case 5:
                     System.out.println("Выдача книги");
-                    for (int i = 0; i < histories.size(); i++) {
-                        if (histories.get(i)==null) {
-                            histories.set(i, addHistory());
-                        break;
-                        }
-                    }
+                            histories.add(addHistory());
                     break;
                 case 6:
                     printGivenBooks();
@@ -190,7 +175,7 @@ public class App {
         int authorsNum = scanner.nextInt();
         scanner.nextLine();
         List<Author> authors = new ArrayList<>();
-        for (int i = 0; i < authors.size(); i++) {
+        for (int i = 0; i < authorsNum ; i++) {
             System.out.print("Имя автора "+(i+1)+": ");//сложение в скобках
             Author author = new Author();
             author.setName(scanner.nextLine());
@@ -203,7 +188,7 @@ public class App {
             System.out.print("Год рождения: ");
             author.setYear(scanner.nextInt());
             scanner.nextLine();
-            authors.set(i, author);
+            authors.add(author);
         }
         book.setAuthor(authors);
         return book;
