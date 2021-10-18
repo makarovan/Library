@@ -6,6 +6,7 @@
 package entity;
 
 import entity.Author;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  *
  * @author pupil
  */
-public class Book {
+public class Book implements Serializable{ //сериализация переводит в байты
     private String caption;
     private List<Author> author;
     private int publishedYear;

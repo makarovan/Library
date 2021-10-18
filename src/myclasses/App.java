@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
+import keeper.FileKeeper;
 
 /**
  *
@@ -24,8 +25,10 @@ public class App {
     List<Book> books = new ArrayList<>();
     List<Reader> readers = new ArrayList<>();
     List<History> histories = new ArrayList<>();
+    FileKeeper fileKeeper = new FileKeeper();
     
-    public App() {
+    public App() {//constructor
+        books = fileKeeper.loadBooks(); //подгружаем книги из файла
     }
     public void run(){
         String repeat = "y";
@@ -50,6 +53,7 @@ public class App {
                 case 1: 
                     System.out.println("Добавление книги");
                     books.add(addBook());//добавление в список
+                    fileKeeper.saveBooks(books);
                     break;
                 case 2:
                     //repeat ="q";
@@ -107,17 +111,7 @@ public class App {
         }while("y".equals(repeat));
     }
     
-    private void printGivenBooks(){
-        for (int i = 0; i < histories.size(); i++) {
-            if (histories.get(i)!=null && histories.get(i).getReturnDate() == null){
-                System.out.printf("%d. Книгу %s читает %s %s%n",
-                                (i+1),
-                                histories.get(i).getBook().getCaption(), 
-                                histories.get(i).getReader().getFirstname(), 
-                                histories.get(i).getReader().getLastname()); 
-            }
-        }
-    }
+   
     
     private History addHistory(){
         History history = new History();
@@ -169,8 +163,10 @@ public class App {
         System.out.print("Год публикации: ");
         book.setPublishedYear(scanner.nextInt());
         scanner.nextLine();
-//считает знак новой строки и очистит буфер от знака новой строки, чтобы он не попал в след. сканер и не пропустил след. строку. 
-//нужен только если после считывания цифры считывается строка
+/**
+ * считает знак новой строки и очистит буфер от знака новой строки, чтобы он не попал в след. сканер и не пропустил след. строку. 
+ * нужен только если после считывания цифры считывается строка
+*/
         System.out.print("Кол-во авторов: ");
         int authorsNum = scanner.nextInt();
         scanner.nextLine();
@@ -204,5 +200,16 @@ public class App {
         reader.setPhone(scanner.nextLine());
         return reader;
     }
-            
+    
+    private void printGivenBooks(){
+        for (int i = 0; i < histories.size(); i++) {
+            if (histories.get(i)!=null && histories.get(i).getReturnDate() == null){
+                System.out.printf("%d. Книгу %s читает %s %s%n",
+                                (i+1),
+                                histories.get(i).getBook().getCaption(), 
+                                histories.get(i).getReader().getFirstname(), 
+                                histories.get(i).getReader().getLastname()); 
+            }
+        }
+    }
 }
