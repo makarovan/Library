@@ -9,6 +9,7 @@ import entity.Reader;
 import entity.Book;
 import entity.Author;
 import entity.History;
+import interfaces.Keeping;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -25,10 +26,13 @@ public class App {
     List<Book> books = new ArrayList<>();
     List<Reader> readers = new ArrayList<>();
     List<History> histories = new ArrayList<>();
-    FileKeeper fileKeeper = new FileKeeper();
+    Keeping keeper = new FileKeeper(); //ctrl + r чтобы изменить везде в программе название переменной 
+    //Keeping keeper = new BaseKeeper(); //изменим реализацию кипера
     
     public App() {//constructor
-        books = fileKeeper.loadBooks(); //подгружаем книги из файла
+        books = keeper.loadBooks(); //подгружаем книги из файла
+        histories = keeper.loadHistories();
+        readers = keeper.loadReaders();
     }
     public void run(){
         String repeat = "y";
@@ -53,7 +57,7 @@ public class App {
                 case 1: 
                     System.out.println("Добавление книги");
                     books.add(addBook());//добавление в список
-                    fileKeeper.saveBooks(books);
+                    keeper.saveBooks(books);
                     break;
                 case 2:
                     //repeat ="q";
@@ -68,6 +72,7 @@ public class App {
                 case 3:
                     System.out.println("Добавления читателя");
                     readers.add(addReader());
+                    keeper.saveReaders(readers);
                     break;
                     
                 case 4:
@@ -81,7 +86,8 @@ public class App {
                 
                 case 5:
                     System.out.println("Выдача книги");
-                            histories.add(addHistory());
+                    histories.add(addHistory());
+                    keeper.saveHistories(histories);
                     break;
                 case 6:
                     printGivenBooks();
@@ -104,8 +110,10 @@ public class App {
                     int historyNumber = scanner.nextInt(); scanner.nextLine();
                     Calendar c = new GregorianCalendar();
                     histories.get(historyNumber-1).setReturnDate(c.getTime());
+                    keeper.saveHistories(histories);
                     break;
                 //default:
+//                    throw new AssernionError();                //default:
 //                    throw new AssernionError();
             }
         }while("y".equals(repeat));
@@ -202,14 +210,20 @@ public class App {
     }
     
     private void printGivenBooks(){
+        System.out.println("Выданные книги:");
+        int n = 0;
         for (int i = 0; i < histories.size(); i++) {
             if (histories.get(i)!=null && histories.get(i).getReturnDate() == null){
                 System.out.printf("%d. Книгу %s читает %s %s%n",
                                 (i+1),
                                 histories.get(i).getBook().getCaption(), 
                                 histories.get(i).getReader().getFirstname(), 
-                                histories.get(i).getReader().getLastname()); 
+                                histories.get(i).getReader().getLastname());
+               n++;
             }
+        }
+        if (n<1){
+            System.out.println("Выданных книг нет");
         }
     }
 }
