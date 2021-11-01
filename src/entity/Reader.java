@@ -45,7 +45,7 @@ public class Reader implements Serializable{
     //вывод текста
     @Override
     public String toString() {
-        return "Reader: " + "Имя: " + firstname +" "+ lastname + ",\nтелефон: " + phone;
+        return  "Имя: " + firstname +" "+ lastname + ",\nтелефон: " + phone;
     }
     
     
