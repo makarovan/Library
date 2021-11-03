@@ -53,8 +53,7 @@ public class App {
             System.out.println("7: Вернуть книгу");
             //System.out.println("8: Редактирование книги");
             
-            int task = scanner.nextInt();
-            scanner.nextLine();
+            int task = getNumber();
             switch(task){
                 case 0: 
                     repeat ="q"; // в конце проверяется, равна ли эта строка "y". если не равна, то программа заканчивается
@@ -87,6 +86,10 @@ public class App {
                 case 7:
                     returnBook();
                     break;
+                    
+                default:
+                    //System.out.print("Выберите из списка задач");
+                    break;
             }
         }while("y".equals(repeat));
     }
@@ -111,32 +114,33 @@ public class App {
         if(setNumbersBooks.isEmpty()){//если все книги выданы, то не дает выдать
             return;
         }
-        int bookNumber;
-        int n=0;
-        do{
-            if(n<1){
-                 System.out.print("Введите номер книги из списка:");
-                 n++;
-            }else{
-                System.out.print("Введите номер доступной книги из списка: ");
-            }
-            bookNumber = getNumber(); //метод с проверкой введенного символа на число
-        }while(!setNumbersBooks.contains(bookNumber));
+        System.out.print("Введите номер книги из списка: ");
+        int bookNumber = insertNumber(setNumbersBooks);
+        //int n=0;
+//        do{
+//            if(n<1){
+//                 System.out.print("Введите номер книги из списка:");
+//                 n++;
+//            }else{
+//                System.out.print("Введите номер доступной книги из списка: ");
+//            }
+//            bookNumber = getNumber(); //метод с проверкой введенного символа на число
+//        }while(!setNumbersBooks.contains(bookNumber));
         
         history.setBook(books.get(bookNumber-1));
         System.out.println("Списко читателей: ");
         Set<Integer> setNumbersReaders = readersList();
-        int readerNumber;
-        n=0;
-        do{
-            if(n<1){
-                System.out.print("Введите номер читателя: ");
-                n++;
-            }else{
-                System.out.print("Введите номер доступного читателя: ");
-            }
-            readerNumber = getNumber();
-        }while(!setNumbersReaders.contains(readerNumber));
+        int readerNumber = insertNumber(setNumbersReaders);
+//        int n=0;
+//        do{
+//            if(n<1){
+//                System.out.print("Введите номер читателя: ");
+//                n++;
+//            }else{
+//                System.out.print("Введите номер доступного читателя: ");
+//            }
+//            readerNumber = getNumber();
+//        }while(!setNumbersReaders.contains(readerNumber));
         
         history.setReader(readers.get(readerNumber-1)); 
 
@@ -160,15 +164,13 @@ public class App {
         System.out.print("Название книги: ");
         book.setCaption(scanner.nextLine());
         System.out.print("Год публикации: ");
-        book.setPublishedYear(scanner.nextInt());
-        scanner.nextLine();
+        book.setPublishedYear(getNumber());
 /**
  * считает знак новой строки и очистит буфер от знака новой строки, чтобы он не попал в след. сканер и не пропустил след. строку. 
  * нужен только если после считывания цифры считывается строка
 */
         System.out.print("Кол-во авторов: ");
-        int authorsNum = scanner.nextInt();
-        scanner.nextLine();
+        int authorsNum = getNumber();
         List<Author> authors = new ArrayList<>();
         for (int i = 0; i < authorsNum ; i++) {
             System.out.print("Имя автора "+(i+1)+": ");//сложение в скобках
@@ -177,17 +179,16 @@ public class App {
             System.out.print("Фамилия автора: ");
             author.setLastname(scanner.nextLine());
             System.out.print("День рождения: ");
-            author.setDay(scanner.nextInt());scanner.nextLine();
+            author.setDay(getNumber());
             System.out.print("Месяц рождения: ");
-            author.setMonth(scanner.nextInt());scanner.nextLine();
+            author.setMonth(getNumber());
             System.out.print("Год рождения: ");
-            author.setYear(scanner.nextInt());
-            scanner.nextLine();
+            author.setYear(getNumber());
             authors.add(author);
         }
         book.setAuthor(authors);
         System.out.print("Кол-во экземпляров: ");
-        book.setQuantity(scanner.nextInt());scanner.nextLine();
+        book.setQuantity(getNumber());
         book.setCount(book.getQuantity());
         books.add(book);
         keeper.saveBooks(books);
@@ -227,7 +228,7 @@ public class App {
         return setNumberGivenBooks;
     }
     
-    private Set<Integer> booksList(){ //ERROR
+    private Set<Integer> booksList(){
         System.out.println("Список книг:");
         Set <Integer> setNumbersBooks = new HashSet();
         for (int i = 0; i < books.size(); i++) {
@@ -287,13 +288,9 @@ public class App {
             return;
         }
 
-        int historyNumber;
+        int historyNumber = insertNumber(numbersGivenBooks);
         
-        do{
-            System.out.print("Выберите возвращаемую книгу: ");
-            historyNumber = getNumber();
-            //проверка, что вводится число
-        }while (!numbersGivenBooks.contains(historyNumber));
+
         
         Calendar c = new GregorianCalendar();
         histories.get(historyNumber-1).setReturnDate(c.getTime());
@@ -311,15 +308,23 @@ public class App {
     
     private int getNumber(){
         do{
-            String strNumber = scanner.nextLine();
             try{
-                int number = Integer.parseInt(strNumber);
-                return number;
+                String strNumber = scanner.nextLine();
+                return Integer.parseInt(strNumber);
             }catch(Exception e){
-                System.out.println("Введен символ "+strNumber+". Попробуйте еще раз");
-                continue;
+                System.out.println("Попробуйте еще раз");
             }
-        }while(false);
-        return -1;
+        }while(true);
+    }
+    
+    private int insertNumber(Set<Integer> setNumbers){
+        do{
+            int historyNumber = getNumber();
+            if (setNumbers.contains(historyNumber)){
+                return historyNumber; 
+            }
+            System.out.println("Попробуй еще раз");
+        }while(true);
+       
     }
 }
