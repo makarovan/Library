@@ -5,22 +5,34 @@
  */
 package entity;
 
-import entity.Author;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /**
  *
- * @author pupil
+ * @author Melnikov
  */
-public class Book implements Serializable{ //сериализация переводит в байты
+@Entity
+public class Book implements Serializable{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String caption;
+    @OneToOne(cascade = CascadeType.ALL)
     private List<Author> author;
     private int publishedYear;
     private int quantity;
     private int count;
+  
+    
     public Book() {
     }
 
@@ -64,20 +76,25 @@ public class Book implements Serializable{ //сериализация перев
         this.count = count;
     }
 
-    //вывод текста
     @Override
     public String toString() {
-        return "Book:" + "\ncaption: " + caption + Arrays.toString(author.toArray()) + ",\npublishedYear=" + publishedYear + ",\nin all: " + quantity + "\nin library: "+count;
+        return "Book{" 
+                + "caption=" + caption 
+                + ", author=" + Arrays.toString(author.toArray())
+                + ", publishedYear=" + publishedYear 
+                + ", quantity=" + quantity 
+                + ", count=" + count 
+                + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.caption);
-        hash = 59 * hash + Objects.hashCode(this.author);
-        hash = 59 * hash + this.publishedYear;
-        hash = 59 * hash + this.quantity;
-        hash = 59 * hash + this.count;
+        int hash = 7;
+        hash = 47 * hash + Objects.hashCode(this.caption);
+        hash = 47 * hash + Objects.hashCode(this.author);
+        hash = 47 * hash + this.publishedYear;
+        hash = 47 * hash + this.quantity;
+        hash = 47 * hash + this.count;
         return hash;
     }
 
@@ -111,6 +128,12 @@ public class Book implements Serializable{ //сериализация перев
         return true;
     }
 
+    public Long getId() {
+        return id;
+    }
 
-    
+    public void setId(Long id) {
+        this.id = id;
+    }
+
 }

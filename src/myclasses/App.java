@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import keeper.BaseKeeper;
 import keeper.FileKeeper;
 
 /**
@@ -27,17 +28,24 @@ import keeper.FileKeeper;
  * @author pupil
  */
 public class App {
-    Scanner scanner = new Scanner(System.in);
-    List<Book> books = new ArrayList<>();
-    List<Reader> readers = new ArrayList<>();
-    List<History> histories = new ArrayList<>();
-    Keeping keeper = new FileKeeper(); //ctrl + r чтобы изменить везде в программе название переменной 
-    //Keeping keeper = new BaseKeeper(); //изменим реализацию кипера
+    public static boolean isBase;
+    private Scanner scanner = new Scanner(System.in);
+    private List<Book> books = new ArrayList<>();
+    private List<Reader> readers = new ArrayList<>();
+    private List<History> histories = new ArrayList<>();
+    private List<Author> authors = new ArrayList<>();
+    private Keeping keeper;
     
     public App() {//constructor
+        if(App.isBase){
+            keeper = new BaseKeeper();
+        }else{
+            keeper = new FileKeeper();
+        }
         books = keeper.loadBooks(); //подгружаем книги из файла
-        histories = keeper.loadHistories();
-        readers = keeper.loadReaders();
+        authors = keeper.loadAuthors();
+//        histories = keeper.loadHistories();
+//        readers = keeper.loadReaders();
     }
     public void run(){
         String repeat = "y";
@@ -51,6 +59,8 @@ public class App {
             System.out.println("5: Выдать книгу");
             System.out.println("6: Список выданных книг");
             System.out.println("7: Вернуть книгу");
+            System.out.println("8: Добавить автора");
+            System.out.println("9: Список авторов");
             //System.out.println("8: Редактирование книги");
             
             int task = getNumber();
@@ -86,6 +96,14 @@ public class App {
                 case 7:
                     returnBook();
                     break;
+                
+                case 8:
+                    addAuthor();
+                    break;
+                    
+                case 9:
+                    printListAuthors();
+                    break;
                     
                 default:
                     //System.out.print("Выберите из списка задач");
@@ -98,6 +116,7 @@ public class App {
     
     private void addHistory(){
         System.out.println("Выдача книги");
+        if(quit()) return;
         History history = new History();
         /**
          * 1. вывести нумированный список книг
@@ -116,31 +135,10 @@ public class App {
         }
         System.out.print("Введите номер книги из списка: ");
         int bookNumber = insertNumber(setNumbersBooks);
-        //int n=0;
-//        do{
-//            if(n<1){
-//                 System.out.print("Введите номер книги из списка:");
-//                 n++;
-//            }else{
-//                System.out.print("Введите номер доступной книги из списка: ");
-//            }
-//            bookNumber = getNumber(); //метод с проверкой введенного символа на число
-//        }while(!setNumbersBooks.contains(bookNumber));
-        
         history.setBook(books.get(bookNumber-1));
         System.out.println("Списко читателей: ");
         Set<Integer> setNumbersReaders = readersList();
         int readerNumber = insertNumber(setNumbersReaders);
-//        int n=0;
-//        do{
-//            if(n<1){
-//                System.out.print("Введите номер читателя: ");
-//                n++;
-//            }else{
-//                System.out.print("Введите номер доступного читателя: ");
-//            }
-//            readerNumber = getNumber();
-//        }while(!setNumbersReaders.contains(readerNumber));
         
         history.setReader(readers.get(readerNumber-1)); 
 
@@ -160,7 +158,30 @@ public class App {
     
     private void addBook(){
         System.out.println("Добавление книги");
+        if(quit()) return;
+        Set<Integer> setNumberAuthors=printListAuthors();
+        if (setNumberAuthors.isEmpty()) {
+            System.out.println("Добавьте автора.");
+            return;
+        }
+        System.out.println("Если есть автор в списке, нажмите 1.");
+        if(getNumber() != 1){
+            System.out.println("Добавьте автора.");
+            return;
+        }
+        System.out.print("Кол-во авторов: ");
+        
+        List<Author> authorsBook = new ArrayList<>();
+        
+        int authorsNum = getNumber();
+        for (int i = 0; i < authorsNum ; i++) {
+            System.out.println("Введите номер автора "+(i+1)+": ");
+            int numberAuthor = insertNumber(setNumberAuthors);
+            authorsBook.add(authors.get(numberAuthor-1));
+        }
         Book book = new Book();
+        book.setAuthor(authorsBook);
+        
         System.out.print("Название книги: ");
         book.setCaption(scanner.nextLine());
         System.out.print("Год публикации: ");
@@ -169,24 +190,7 @@ public class App {
  * считает знак новой строки и очистит буфер от знака новой строки, чтобы он не попал в след. сканер и не пропустил след. строку. 
  * нужен только если после считывания цифры считывается строка
 */
-        System.out.print("Кол-во авторов: ");
-        int authorsNum = getNumber();
-        List<Author> authors = new ArrayList<>();
-        for (int i = 0; i < authorsNum ; i++) {
-            System.out.print("Имя автора "+(i+1)+": ");//сложение в скобках
-            Author author = new Author();
-            author.setName(scanner.nextLine());
-            System.out.print("Фамилия автора: ");
-            author.setLastname(scanner.nextLine());
-            System.out.print("День рождения: ");
-            author.setDay(getNumber());
-            System.out.print("Месяц рождения: ");
-            author.setMonth(getNumber());
-            System.out.print("Год рождения: ");
-            author.setYear(getNumber());
-            authors.add(author);
-        }
-        book.setAuthor(authors);
+        
         System.out.print("Кол-во экземпляров: ");
         book.setQuantity(getNumber());
         book.setCount(book.getQuantity());
@@ -196,6 +200,7 @@ public class App {
             
     private void addReader(){
         System.out.println("Добавления читателя");
+        if(quit()) return;
         Reader reader = new Reader();
         System.out.print("Имя читателя: ");
         reader.setFirstname(scanner.nextLine());
@@ -283,6 +288,7 @@ public class App {
 
     private void returnBook() {
         System.out.println("Возвращение книги");
+        if(quit()) return;
         Set<Integer> numbersGivenBooks = printGivenBooks();
         if (numbersGivenBooks.isEmpty()){
             return;
@@ -326,5 +332,40 @@ public class App {
             System.out.println("Попробуй еще раз");
         }while(true);
        
+    }
+    
+    private void addAuthor(){
+        Author author = new Author();
+        System.out.print("Имя автора ");
+        author.setName(scanner.nextLine());
+        System.out.print("Фамилия автора: ");
+        author.setLastname(scanner.nextLine());
+        System.out.print("День рождения: ");
+        author.setDay(getNumber());
+        System.out.print("Месяц рождения: ");
+        author.setMonth(getNumber());
+        System.out.print("Год рождения: ");
+        author.setYear(getNumber());
+        authors.add(author);
+        keeper.saveAuthors(authors);
+    }
+
+    private Set<Integer> printListAuthors() {
+        Set<Integer> setNumbersAuthors = new HashSet();
+        System.out.println("Список авторов");
+        for (int i = 0; i < authors.size(); i++) {
+            if (authors.get(i)!=null){
+                System.out.printf("%d. %s%n", i+1,authors.get(i).toString());
+                setNumbersAuthors.add(i+1);
+            }
+        }
+        return setNumbersAuthors;
+    }
+    
+    private boolean quit(){
+        System.out.println("Чтобы закончить операцию нажмите \"q\", для продолжения любой другой символ");
+        String quit = scanner.nextLine();
+        if("q".equals(quit)) return true;
+      return false;
     }
 }

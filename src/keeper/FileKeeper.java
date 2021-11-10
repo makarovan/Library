@@ -138,6 +138,43 @@ public class FileKeeper implements Keeping{
        return listHistories;
     }
     //авторы сохраняются в книгу
+
+    @Override
+    public void saveAuthors(List<Author> authors) {
+        FileOutputStream fos = null;
+        ObjectOutputStream oos = null;
+        try {
+            fos = new FileOutputStream("authors");//использование текущей директории, букс будет создан в папке проекта
+            oos = new ObjectOutputStream(fos);
+            oos.writeObject(authors);
+            oos.flush();//проталкивание данных на жесткий диск
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FileKeeper.class.getName()).log(Level.SEVERE, "file authors not found", ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FileKeeper.class.getName()).log(Level.SEVERE, "input error", ex);
+        }
+    }
+
+    @Override
+    public List<Author> loadAuthors() {
+        List <Author> listAuthors = new ArrayList();
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
+        try {
+            fis = new FileInputStream("authors");
+            ois = new ObjectInputStream(fis);
+            listAuthors = (List<Author>) ois.readObject();
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(FileKeeper.class.getName()).log(Level.SEVERE, "file authors not found", ex);
+        } catch (IOException ex) {
+            Logger.getLogger(FileKeeper.class.getName()).log(Level.SEVERE, "output error", ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(FileKeeper.class.getName()).log(Level.SEVERE, "class not found", ex);
+        }
+        
+       return listAuthors;
+    }
     
     
 }

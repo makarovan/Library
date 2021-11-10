@@ -7,12 +7,19 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  *
- * @author pupil
+ * @author Melnikov
  */
+@Entity
 public class Author implements Serializable{
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String name;
     private String lastname;
     private int year;
@@ -61,22 +68,26 @@ public class Author implements Serializable{
     public void setMonth(int month) {
         this.month = month;
     }
-    
-    //вывод текста
+
     @Override
     public String toString() {
-        return "\nAuthor: " + name +" "+ lastname;
-        //return "\nAuthor{" + "name=" + name + ",\n lastname=" + lastname + ",\n year=" + year + ",\n day=" + day + ",\n month=" + month + '}';
+        return "Author{" 
+                + "name=" + name 
+                + ", lastname=" + lastname 
+                + ", year=" + year 
+                + ", day=" + day 
+                + ", month=" + month 
+                + '}';
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.name);
-        hash = 97 * hash + Objects.hashCode(this.lastname);
-        hash = 97 * hash + this.year;
-        hash = 97 * hash + this.day;
-        hash = 97 * hash + this.month;
+        hash = 43 * hash + Objects.hashCode(this.name);
+        hash = 43 * hash + Objects.hashCode(this.lastname);
+        hash = 43 * hash + this.year;
+        hash = 43 * hash + this.day;
+        hash = 43 * hash + this.month;
         return hash;
     }
 
@@ -108,6 +119,14 @@ public class Author implements Serializable{
             return false;
         }
         return true;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
     
     
