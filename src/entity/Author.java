@@ -17,15 +17,17 @@ import javax.persistence.Id;
  * @author Melnikov
  */
 @Entity
-public class Author implements Serializable{
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Author implements Serializable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String lastname;
     private int year;
     private int day;
     private int month;
-    
+
     public Author() {
     }
 
@@ -71,12 +73,12 @@ public class Author implements Serializable{
 
     @Override
     public String toString() {
-        return "Author{" 
-                + "name=" + name 
-                + ", lastname=" + lastname 
-                + ", year=" + year 
-                + ", day=" + day 
-                + ", month=" + month 
+        return "Author{"
+                + "name=" + name
+                + ", lastname=" + lastname
+                + ", year=" + year
+                + ", day=" + day
+                + ", month=" + month
                 + '}';
     }
 
@@ -128,6 +130,5 @@ public class Author implements Serializable{
     public void setId(Long id) {
         this.id = id;
     }
-    
-    
+
 }

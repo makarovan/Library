@@ -20,9 +20,9 @@ public class Reader implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    String firstname;
-    String lastname;
-    String phone;
+    private String firstname;
+    private String lastname;
+    private String phone;
     public Reader() {
     }
 

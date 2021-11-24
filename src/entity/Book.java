@@ -20,6 +20,14 @@ import javax.persistence.OneToOne;
  *
  * @author Melnikov
  */
+
+
+/**
+ * mysql-connector
+ * eclipselink jpa 2.1
+ * persistence jpa 2.1
+ * @author pupil
+ */
 @Entity
 public class Book implements Serializable{
     @Id
@@ -78,13 +86,11 @@ public class Book implements Serializable{
 
     @Override
     public String toString() {
-        return "Book{" 
-                + "caption=" + caption 
-                + ", author=" + Arrays.toString(author.toArray())
-                + ", publishedYear=" + publishedYear 
-                + ", quantity=" + quantity 
-                + ", count=" + count 
-                + '}';
+        return "Book: " + caption 
+                + ", author: " + Arrays.toString(author.toArray())
+                + ", publishedYear: " + publishedYear 
+                + ", quantity: " + quantity 
+                + ", count: " + count;
     }
 
     @Override
