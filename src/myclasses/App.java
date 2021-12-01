@@ -43,18 +43,19 @@ public class App {
     private ReaderFacade readerFacade = new ReaderFacade(Reader.class);
     private HistoryFacade historyFacade = new HistoryFacade(History.class);
     private AuthorFacade authorFacade = new AuthorFacade(Author.class);
-    private Keeping keeper;
+//    private Keeping keeper;
+//    private Class <Book> Book;
     
-    public App() {//constructor ERROR
-        if(App.isBase){
-            keeper = new BaseKeeper(); //база данных
-        }else{
-            keeper = new FileKeeper(); //файлы
-        }
-        books = keeper.loadBooks(); //подгружаем книги из файла
-        authors = keeper.loadAuthors();
-        histories = keeper.loadHistories();
-        readers = keeper.loadReaders();
+    public App() {//constructor
+//        if(App.isBase){ //keeper не нужен, сохраняем через facade
+//            keeper = new BaseKeeper(); //база данных
+//        }else{
+//            keeper = new FileKeeper(); //файлы
+//        }
+//        books = keeper.loadBooks(); //подгружаем книги из файла
+//        authors = keeper.loadAuthors();
+//        histories = keeper.loadHistories();
+//        readers = keeper.loadReaders();
     }
     public void run(){
         String repeat = "y";
@@ -203,6 +204,7 @@ public class App {
         System.out.print("Кол-во экземпляров: ");
         book.setQuantity(getNumber());
         book.setCount(book.getQuantity());
+        bookFacade.create(book);
     }
             
     private void addReader(){
@@ -218,18 +220,19 @@ public class App {
         readerFacade.create(reader);
     }
     
-    private Set<Integer> printGivenBooks(){
+    private Set<Integer> printGivenBooks(){ 
         System.out.println("Выданные книги:");
+        List <History> historyWithGivenBooks = historyFacade.findHistoryWithGivenBooks();
         Set<Integer> setNumberGivenBooks = new HashSet<>();
-        for (int i = 0; i < histories.size(); i++) {
-            if (histories.get(i)!=null && histories.get(i).getReturnDate() == null 
-                    && histories.get(i).getBook().getCount()<histories.get(i).getBook().getQuantity()){ //если книг в наличии меньше, чем записано в кол-ве
+        for (int i = 0; i < historyWithGivenBooks.size(); i++) {
+            if (historyWithGivenBooks.get(i)!=null && historyWithGivenBooks.get(i).getReturnDate() == null 
+                    && historyWithGivenBooks.get(i).getBook().getCount()<historyWithGivenBooks.get(i).getBook().getQuantity()){ //если книг в наличии меньше, чем записано в кол-ве
                 System.out.printf("%d. Книгу %s читает %s %s%n",
-                                (i+1),
-                                histories.get(i).getBook().getCaption(), 
-                                histories.get(i).getReader().getFirstname(), 
-                                histories.get(i).getReader().getLastname());
-               setNumberGivenBooks.add(i+1);
+                                historyWithGivenBooks.get(i).getId(),
+                                historyWithGivenBooks.get(i).getBook().getCaption(), 
+                                historyWithGivenBooks.get(i).getReader().getFirstname(), 
+                                historyWithGivenBooks.get(i).getReader().getLastname());
+               setNumberGivenBooks.add(historyWithGivenBooks.get(i).getId().intValue());
                //экземпляры закончились
             }
         }
@@ -463,7 +466,7 @@ public class App {
                 int numAuthor = insertNumber(setNumbersBooks);
                 bookAuthors.add(authorFacade.find((long)numAuthor));
             }
-            bookFacade.edit(book);
         }
+        bookFacade.edit(book);
     }
 }

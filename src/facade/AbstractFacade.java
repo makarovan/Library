@@ -45,7 +45,8 @@ public abstract class AbstractFacade<T> {
     public List<T> findAll(){
         try{
             //jpql =! sql, it uses entities, here jpql is used
-            return getEntityManager().createQuery("SELECT entity FROM"+entityClass.getName()+"entity").getResultList();
+            return getEntityManager().createQuery("SELECT entity FROM "+
+                    entityClass.getName()+" entity").getResultList(); //должны быть пробелы между словами
         }catch(Exception e){
             return new ArrayList<>();
         }

@@ -7,10 +7,9 @@ package facade;
 
 import entity.Book;
 import entity.History;
+import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import tools.Singleton;
 
 /**
  *
@@ -18,12 +17,12 @@ import javax.persistence.Persistence;
  */
 public class HistoryFacade extends AbstractFacade<History>{
     //три поля из basekeeper    
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("JKTV20LibraryPU");
-    private EntityManager em = emf.createEntityManager();
-    private EntityTransaction tx = em.getTransaction();
+    private EntityManager em;
     
     public HistoryFacade(Class<History> entityClass) {
         super(entityClass);
+        Singleton singleton = Singleton.getInstance();
+        em = singleton.getEntityManager();
     }
 
     @Override
@@ -36,6 +35,10 @@ public class HistoryFacade extends AbstractFacade<History>{
         return (History) getEntityManager().createQuery("SELECT history FROM history WHERE history.book = :book AND history.returnDate = null")
                 .setParameter("book", book)
                 .getSingleResult();
+    }
+    
+    public List<History> findHistoryWithGivenBooks(){
+        return getEntityManager().createQuery("SELECT h FROM History h WHERE h.returnDate = null").getResultList();
     }
 
     
