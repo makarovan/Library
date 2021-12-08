@@ -5,7 +5,7 @@
  */
 package library;
 
-import myclasses.App;
+import app.App;
 
 /**
  *
