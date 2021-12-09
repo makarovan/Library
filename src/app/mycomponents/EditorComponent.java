@@ -48,10 +48,12 @@ public class EditorComponent extends JPanel{
         editor.setMaximumSize(editor.getPreferredSize());
         editor.setMinimumSize(editor.getPreferredSize());
         this.add(editor);
-        
-        
     }
 
+    public JTextField getEditor() {
+        return editor;
+    }
+    
     public JLabel getCaption() {
         return caption;
     }
