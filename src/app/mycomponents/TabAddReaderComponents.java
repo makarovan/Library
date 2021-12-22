@@ -19,7 +19,7 @@ import javax.swing.JPanel;
  *
  * @author pupil
  */
-class TabAddReaderComponents extends JPanel{
+public class TabAddReaderComponents extends JPanel{
     private CaptionComponent captionComponent;
     private InfoComponent infoComponent;
     private EditorComponent readerNameComponent;

@@ -7,6 +7,7 @@ package app.mycomponents;
 
 import app.GuiApp;
 import java.awt.Dimension;
+import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 /**
@@ -25,10 +26,19 @@ public class GuestComponent extends JPanel{
     }
 
     private void initComponents() {
-        listBooksComponent = new ListBooksComponent(true, "Книги", GuiApp.width_windows, GuiApp.height_window, GuiApp.width_windows);
+        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        listBooksComponent = new ListBooksComponent(true, "Список книг библиотеки", GuiApp.width_windows, GuiApp.height_window-100, 400);//now showing
+        //listBooksComponent.getJList().setModel(listBooksComponent.getListModel(true));
+        //listBooksComponent.getJList().setCellRenderer(listBooksComponent.createListBooksRenderer());
         this.add(listBooksComponent);
-        guestButtonsComponent = new GuestButtonsComponent("Войти", "Зарегистрироваться", GuiApp.width_windows, 50, WIDTH);
+
     }
+
     
     
+    
+    public ListBooksComponent getListBooksComponent() {
+        return listBooksComponent;
+    }
+
 }
