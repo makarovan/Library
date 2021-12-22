@@ -20,7 +20,7 @@ public class HistoryFacade extends AbstractFacade<History>{
     //три поля из basekeeper    
     private EntityManager em;
     
-    public HistoryFacade(Class<History> entityClass) {
+    public HistoryFacade() {
         super(History.class);
         Singleton singleton = Singleton.getInstance();
         em = singleton.getEntityManager();

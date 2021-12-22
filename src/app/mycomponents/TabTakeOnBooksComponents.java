@@ -41,8 +41,8 @@ class TabTakeOnBooksComponents extends JPanel{
     private ListBooksComponent listBooksComponent;
     private ButtonComponent buttonComponent;
     private ComboBoxModel comboBoxModel;
-    private HistoryFacade historyFacade = new HistoryFacade(History.class);
-    private BookFacade bookFacade = new BookFacade(Book.class); 
+    private HistoryFacade historyFacade = new HistoryFacade();
+    private BookFacade bookFacade = new BookFacade(); 
     
     public TabTakeOnBooksComponents(int widthPanel) {
         setPreferredSize(new Dimension(GuiApp.width_windows, GuiApp.height_window));
@@ -135,7 +135,7 @@ class TabTakeOnBooksComponents extends JPanel{
         };
     }
     private void setComboBoxModel(){
-        ReaderFacade readerFacade = new ReaderFacade(Reader.class);
+        ReaderFacade readerFacade = new ReaderFacade();
         List<Reader> readers = readerFacade.findAll();
         DefaultComboBoxModel<Reader> defaultComboBoxModel = new DefaultComboBoxModel<>();
         for (Reader reader : readers) {

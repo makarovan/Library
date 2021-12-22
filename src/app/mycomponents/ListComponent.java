@@ -85,7 +85,7 @@ public class ListComponent extends JPanel{
     }
 
     private ListModel<Author> getListModel() {
-        AuthorFacade authorFacade = new AuthorFacade(Author.class); //инициировали фасад
+        AuthorFacade authorFacade = new AuthorFacade(); //инициировали фасад
         List<Author> authors = authorFacade.findAll();
         DefaultListModel<Author> defaultListModel = new DefaultListModel<>();
         for (Author author : authors){

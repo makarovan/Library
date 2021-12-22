@@ -119,7 +119,7 @@ public class ListBooksComponent extends JPanel{
      * @return объект DefaultListModel
      */
     public ListModel<Book> getListModel(boolean allBooks) {
-        BookFacade bookFacade = new BookFacade(Book.class);
+        BookFacade bookFacade = new BookFacade();
         List<Book> books=null;
         if(allBooks){
             books = bookFacade.findAll();

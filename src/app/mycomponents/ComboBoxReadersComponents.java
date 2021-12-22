@@ -77,7 +77,7 @@ public class ComboBoxReadersComponents extends JPanel{
     }
 
     private ComboBoxModel<Reader> getListModel() {
-        ReaderFacade readerFacade = new ReaderFacade(Reader.class); //инициировали фасад
+        ReaderFacade readerFacade = new ReaderFacade(); //инициировали фасад
         List<Reader> readers = readerFacade.findAll();
         DefaultComboBoxModel<Reader> defaultComboBoxModel = new DefaultComboBoxModel<>();
         for (Reader reader : readers){

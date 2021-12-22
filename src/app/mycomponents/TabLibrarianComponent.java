@@ -107,7 +107,7 @@ public class TabLibrarianComponent extends JPanel{
                 }
                 book.setAuthor(bookAuthors);
                 
-                BookFacade bookFacade = new BookFacade(Book.class);
+                BookFacade bookFacade = new BookFacade();
                 try{
                     bookFacade.create(book);
                     infoComponent.getInfo().setText("Книга успешно добавлена" + Arrays.toString(bookAuthors.toArray()));     

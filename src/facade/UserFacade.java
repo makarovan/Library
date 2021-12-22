@@ -16,7 +16,7 @@ import tools.Singleton;
 public class UserFacade extends AbstractFacade<User>{
     private EntityManager em;
     
-    public UserFacade(Class<User> entityClass) {//constructor
+    public UserFacade() {//constructor
         super(User.class);
         Singleton singleton = Singleton.getInstance();
         em = singleton.getEntityManager();

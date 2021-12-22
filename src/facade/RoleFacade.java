@@ -16,7 +16,7 @@ import tools.Singleton;
 public class RoleFacade extends AbstractFacade<Role>{
     private EntityManager em;
     
-    public RoleFacade(Class<Role> entityClass) {//constructor
+    public RoleFacade() {//constructor
         super(Role.class);
         Singleton singleton = Singleton.getInstance();
         em = singleton.getEntityManager();

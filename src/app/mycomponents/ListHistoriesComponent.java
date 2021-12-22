@@ -105,7 +105,7 @@ public class ListHistoriesComponent extends JPanel{
         if(reader == null){
             return new DefaultListModel<>();
         }
-        HistoryFacade historyFacade = new HistoryFacade(History.class);
+        HistoryFacade historyFacade = new HistoryFacade();
         List<History> histories=null;
         histories = historyFacade.findAll(reader);
         DefaultListModel<History> defaultListModel = new DefaultListModel<>();
