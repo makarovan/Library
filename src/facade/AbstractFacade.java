@@ -21,7 +21,7 @@ public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
     
     public AbstractFacade(Class<T> entityClass){
-            this.entityClass = entityClass;//transaction
+            this.entityClass = entityClass;//change here sth
     }
     
     protected abstract EntityManager getEntityManager();

@@ -21,7 +21,7 @@ public class HistoryFacade extends AbstractFacade<History>{
     private EntityManager em;
     
     public HistoryFacade(Class<History> entityClass) {
-        super(entityClass);
+        super(History.class);
         Singleton singleton = Singleton.getInstance();
         em = singleton.getEntityManager();
     }

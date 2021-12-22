@@ -5,7 +5,7 @@
  */
 package facade;
 
-import entity.Reader;
+import entity.User;
 import javax.persistence.EntityManager;
 import tools.Singleton;
 
@@ -13,11 +13,11 @@ import tools.Singleton;
  *
  * @author pupil
  */
-public class ReaderFacade extends AbstractFacade<Reader>{
+public class UserFacade extends AbstractFacade<User>{
     private EntityManager em;
     
-    public ReaderFacade(Class<Reader> entityClass) {//constructor
-        super(Reader.class);
+    public UserFacade(Class<User> entityClass) {//constructor
+        super(User.class);
         Singleton singleton = Singleton.getInstance();
         em = singleton.getEntityManager();
     }
