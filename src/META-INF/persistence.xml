@@ -6,6 +6,9 @@
     <class>entity.Book</class>
     <class>entity.Reader</class>
     <class>entity.History</class>
+    <class>entity.User</class>
+    <class>entity.Role</class>
+    <class>entity.UserRoles</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jktv20library?useUnicode=true&amp;characterEncoding=utf8"/>
       <property name="javax.persistence.jdbc.user" value="jktv20library"/>

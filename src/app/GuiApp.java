@@ -8,8 +8,12 @@ package app;
 import app.mycomponents.ButtonComponent;
 import app.mycomponents.CaptionComponent;
 import app.mycomponents.EditorComponent;
+import app.mycomponents.GuestComponent;
 import app.mycomponents.InfoComponent;
 import app.mycomponents.ListComponent;
+import app.mycomponents.TabLibrarianComponent;
+import app.mycomponents.TabDirectorComponent;
+import app.mycomponents.TabReaderComponent;
 import entity.Author;
 import entity.Book;
 import facade.BookFacade;
@@ -22,21 +26,18 @@ import java.util.List;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 /**
  *
  * @author pupil
  */
 public class GuiApp extends JFrame{
-    private CaptionComponent captionComponent;
-    private ButtonComponent buttonComponent;
-    private EditorComponent editorComponent;
-    private InfoComponent infoComponent;
-    private ListComponent listComponent;
-    private EditorComponent bookNameComponent;
-    private EditorComponent publishedYearComponent;
-    private EditorComponent quantityComponent;
-
+    public static final int width_windows = 600;
+    public static final int height_window = 450;
+    private GuestComponent guestComponent;
+    
     public GuiApp() {
         initComponents();
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -44,88 +45,30 @@ public class GuiApp extends JFrame{
     }
     
     private void initComponents() {
-        this.setPreferredSize(new Dimension(600,400));
+        this.setPreferredSize(new Dimension(width_windows,height_window));
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
-        this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+        this.setTitle("JKTV20 LIBRARY");
+        guestComponent = new GuestComponent();
+        this.add(guestComponent);
         
-        captionComponent = new CaptionComponent("Добавить новую книгу", this.getWidth(), 25);
-        this.add(captionComponent);
         
-        infoComponent = new InfoComponent("", this.getWidth(),25);
-        this.add(infoComponent);
-        
-        this.add(Box.createRigidArea(new Dimension(0, 10)));
-        
-        bookNameComponent = new EditorComponent("Заголовок книги", this.getWidth(), 31, 300);
-        this.add(bookNameComponent);
-        
-        listComponent = new ListComponent("Список авторов", this.getWidth(), 100, 300);
-        this.add(listComponent);
-        
-        publishedYearComponent = new EditorComponent("Год издания", this.getWidth(), 31, 100);
-        this.add(publishedYearComponent);
-        
-        quantityComponent = new EditorComponent("Колличество экземпляров", this.getWidth(), 31, 50);
-        this.add(quantityComponent);
-        
-        buttonComponent = new ButtonComponent("Добавить книгу", this.getWidth(), 31, 178, 150);
-        this.add(buttonComponent);
-        buttonComponent.getButton().addActionListener(clickToButtonAddBook());
+//        JTabbedPane jTabbedPane = new JTabbedPane();
+//        this.setPreferredSize(new Dimension(width_windows,height_window));
+//        this.setMinimumSize(jTabbedPane.getPreferredSize());
+//        this.setMaximumSize((jTabbedPane.getPreferredSize()));
+//        this.getContentPane().add(jTabbedPane);
+//        
+//        TabReaderComponent tabReaderComponent = new TabReaderComponent(this.getWidth());
+//        jTabbedPane.addTab("Читатель", tabReaderComponent);
+//        
+//        TabLibrarianComponent tabLibrarianComponent = new TabLibrarianComponent(this.getWidth());
+//        jTabbedPane.addTab("Библиотекарь", tabLibrarianComponent);
+//        this.getContentPane().add(jTabbedPane);
+//        
+//        TabDirectorComponent tabDirectorComponent = new TabDirectorComponent(this.getWidth());
+//        jTabbedPane.addTab("Директор", tabDirectorComponent);
     }
-    
-    private ActionListener clickToButtonAddBook(){
-        return new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                /**
-                 * создать объект book
-                 * инициировать поля книги, используя элементы компонентов
-                 * добавить книгу в базу данных
-                 * сообщтить пользователю о результате
-                 * если true очистить результаты
-                 */
-                Book book = new Book();
-                if(bookNameComponent.getEditor().getText().isEmpty()){
-                   infoComponent.getInfo().setText("введите название книги");
-                   return; //exit from action
-                }
-                book.setCaption(bookNameComponent.getEditor().getText());
-                
-                try{
-                    book.setPublishedYear(Integer.parseInt(publishedYearComponent.getEditor().getText()));
-                }catch(Exception e){
-                    infoComponent.getInfo().setText("Введите год издания цифрами");  
-                    return;
-                }
-                
-                try{
-                    book.setQuantity(Integer.parseInt(quantityComponent.getEditor().getText()));
-                }catch(Exception e){
-                    infoComponent.getInfo().setText("Введите колличество цифрами");  
-                    return;
-                }
-                
-                List<Author> bookAuthors = listComponent.getJList().getSelectedValuesList();
-                if(bookAuthors.isEmpty()){
-                    infoComponent.getInfo().setText("Вы не выбрали автора");  
-                    return;
-                }
-                book.setAuthor(bookAuthors);
-                
-                BookFacade bookFacade = new BookFacade(Book.class);
-                try{
-                    bookFacade.create(book);
-                    infoComponent.getInfo().setText("Кига успешно добавлена" + Arrays.toString(bookAuthors.toArray()));          
-                }catch(Exception e){
-                    infoComponent.getInfo().setText("книгу добавить не удалось");      
-                }
-                
-            }
-        };
-    }
-    
-    
     
     public static void main(String[] args) {//psvm + tab
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -134,4 +77,5 @@ public class GuiApp extends JFrame{
             } //project properties - run - browse main class - guiapp
         });
     }
+
 }
