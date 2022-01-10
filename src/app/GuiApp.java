@@ -45,9 +45,11 @@ import javax.swing.JTabbedPane;
  *
  * @author pupil
  */
-public class GuiApp extends JFrame{
+public class GuiApp extends JFrame{//error
     public static final int width_windows = 600;
     public static final int height_window = 450;
+    private static User user;
+    private static String role;
     private GuestComponent guestComponent;
     private TabAddReaderComponents tabAddReaderComponents;
     private GuestButtonsComponent guestButtonsComponent;
@@ -113,19 +115,54 @@ public class GuiApp extends JFrame{
         guestButtonsComponent.getButton1().addActionListener(new ActionListener() {//actionlistener прописать для кнопки входа
             @Override
             public void actionPerformed(ActionEvent ae) {
+                int widthWindows = 350;
                 JDialog dialogLogin = new JDialog(guiApp, "Введите логин и пароль", Dialog.ModalityType.DOCUMENT_MODAL);
-                EditorComponent loginComponent = new EditorComponent("Пароль", GuiApp.width_windows, 27, 200);
-                EditorComponent passwordComponent = new EditorComponent("Логин", GuiApp.width_windows, 27, 200);
-                ButtonComponent enterComponent = new ButtonComponent("Войти", GuiApp.width_windows, 27, 200, 150);
                 
+                dialogLogin.setPreferredSize(new Dimension(400,250));
+                dialogLogin.setMinimumSize(dialogLogin.getPreferredSize());
+                dialogLogin.setMaximumSize(dialogLogin.getPreferredSize());
                 dialogLogin.getContentPane().setLayout(new BoxLayout(dialogLogin.getContentPane(), BoxLayout.Y_AXIS));
                 dialogLogin.setLocationRelativeTo(null);
+                
+                CaptionComponent captionComponent = new CaptionComponent("Введите логин и пароль", 400, 27);
+                InfoComponent infoComponent = new InfoComponent("", 400, 27);
+                EditorComponent loginComponent = new EditorComponent("Логин", widthWindows, 27, 80, 200);
+                EditorComponent passwordComponent = new EditorComponent("Пароль", widthWindows, 27, 80, 200);
+                ButtonComponent enterComponent = new ButtonComponent("Войти", widthWindows, 27, 85, 200);
+                
+                dialogLogin.getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
+                dialogLogin.getContentPane().add(captionComponent);
+                dialogLogin.getContentPane().add(infoComponent);
+                dialogLogin.getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
                 dialogLogin.getContentPane().add(loginComponent);
                 dialogLogin.getContentPane().add(passwordComponent);
+                dialogLogin.getContentPane().add(Box.createRigidArea(new Dimension(0,10)));
                 dialogLogin.getContentPane().add(enterComponent);
-                dialogLogin.setPreferredSize(new Dimension(500,250));
-//                dialogLogin.setMinimumSize(new Dimension(200,200));
-//                dialogLogin.setMaximumSize(new Dimension(500,250));
+                
+                enterComponent.getButton().addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {//error
+                        //аутентификация - узнать есть ли такой пользователь
+                        User user = userFacade.find(loginComponent.getEditor().getText().trim());
+                        if(user == null){
+                            infoComponent.getInfo().setText("Пользователь не найден");
+                            return;
+                        }
+                        //авторизация - он ли этот пользователь и кукие имеет права
+                        if(!user.getPassword().equals(passwordComponent.getEditor().getText().trim())){
+                            infoComponent.getInfo().setText("Пользователь не найден или неверный пароль");
+                            return;
+                        }
+                        
+                        GuiApp.user = user;
+                        //пользователь тот за кого себя выдает, устнавливаем разрешения
+                        String role = userRolesFacade.topRole(user);
+                        GuiApp.role = role;
+                        dialogLogin.setVisible(false);
+                        dialogLogin.dispose();
+                    }
+                });
+                
                 dialogLogin.pack();
                 dialogLogin.setVisible(true);
                 

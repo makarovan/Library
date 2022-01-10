@@ -24,16 +24,33 @@ public class EditorComponent extends JPanel{
     private JTextField editor;
     
     public EditorComponent(String text, int widthWindow, int heightPanel, int editorWidth) {
-        initComponents(text, widthWindow, heightPanel, editorWidth);
+        initComponents(text, widthWindow, heightPanel,0, editorWidth);
+    }
+    /**
+     * Компонент состоит из панели, на которой распологаются в строчку метка и текстовый редактор
+     * @param text - текст слева от редактора
+     * @param widthWindow - ширина компонента, обычно равна ширине окна
+     * @param heightPanel - высота панели редактора
+     * @param left - отступ от левого края окна до редактора. ширина лейбла
+     * @param editorWidth - ширина редактора
+     */
+    
+    public EditorComponent(String text, int widthWindow, int heightPanel, int left, int editorWidth) {
+        initComponents(text, widthWindow, heightPanel, left, editorWidth);
     }
 
-    private void initComponents(String text, int widthWindow, int heightPanel, int editorWidth) {
+    private void initComponents(String text, int widthWindow, int heightPanel, int left, int editorWidth) {
         this.setPreferredSize(new Dimension(widthWindow, heightPanel));//width equals widthwindow width
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         
         caption = new JLabel(text);
+        if (left > 0){
+            
+        }else{
+            
+        }
         caption.setPreferredSize(new Dimension(widthWindow/3, heightPanel));
         caption.setMaximumSize(caption.getPreferredSize());
         caption.setMinimumSize(caption.getPreferredSize());

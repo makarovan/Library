@@ -42,7 +42,7 @@ public class ButtonComponent extends JPanel{//error commentary
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         
         caption = new JLabel("");
-        caption.setPreferredSize(new Dimension(widthWindow/3, heightPanel));
+        caption.setPreferredSize(new Dimension(left, heightPanel));
         caption.setMaximumSize(caption.getPreferredSize());
         caption.setMinimumSize(caption.getPreferredSize());
         caption.setHorizontalAlignment(JLabel.RIGHT);
