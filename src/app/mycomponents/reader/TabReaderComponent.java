@@ -3,8 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomponents;
+package app.mycomponents.reader;
 
+import app.mycomponents.ButtonComponent;
+import app.mycomponents.CaptionComponent;
+import app.mycomponents.ComboBoxReadersComponents;
+import app.mycomponents.EditorComponent;
+import app.mycomponents.InfoComponent;
+import app.mycomponents.ListBooksComponent;
+import app.mycomponents.reader.TabTakeOnBooksComponents;
 import entity.Reader;
 import facade.ReaderFacade;
 import static java.awt.Component.CENTER_ALIGNMENT;

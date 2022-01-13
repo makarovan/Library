@@ -12,10 +12,10 @@ import app.mycomponents.GuestButtonsComponent;
 import app.mycomponents.GuestComponent;
 import app.mycomponents.InfoComponent;
 import app.mycomponents.ListComponent;
-import app.mycomponents.TabAddReaderComponents;
-import app.mycomponents.TabLibrarianComponent;
-import app.mycomponents.TabDirectorComponent;
-import app.mycomponents.TabReaderComponent;
+import app.mycomponents.director.TabAddReaderComponents;
+import app.mycomponents.manager.TabManagerComponent;
+import app.mycomponents.director.TabDirectorComponent;
+import app.mycomponents.reader.TabReaderComponent;
 import entity.Author;
 import entity.Book;
 import entity.Reader;
@@ -50,6 +50,7 @@ public class GuiApp extends JFrame{//error
     public static final int height_window = 450;
     private static User user;
     private static String role;
+    private InfoComponent infoTopComponent;
     private GuestComponent guestComponent;
     private TabAddReaderComponents tabAddReaderComponents;
     private GuestButtonsComponent guestButtonsComponent;
@@ -106,6 +107,10 @@ public class GuiApp extends JFrame{//error
         this.setMinimumSize(this.getPreferredSize());
         this.setMaximumSize(this.getPreferredSize());
         this.setLayout(new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS));
+        
+        infoTopComponent = new InfoComponent("", width_windows, 27);
+        this.add(infoTopComponent);
+        
         guestComponent = new GuestComponent();
         
         guestButtonsComponent = new GuestButtonsComponent("Войти", "Зарегистрироваться", GuiApp.width_windows, 50,100,10, 200);
@@ -141,7 +146,7 @@ public class GuiApp extends JFrame{//error
                 
                 enterComponent.getButton().addActionListener(new ActionListener() {
                     @Override
-                    public void actionPerformed(ActionEvent ae) {//error
+                    public void actionPerformed(ActionEvent ae) {
                         //аутентификация - узнать есть ли такой пользователь
                         User user = userFacade.find(loginComponent.getEditor().getText().trim());
                         if(user == null){
@@ -158,6 +163,38 @@ public class GuiApp extends JFrame{//error
                         //пользователь тот за кого себя выдает, устнавливаем разрешения
                         String role = userRolesFacade.topRole(user);
                         GuiApp.role = role;
+                        infoTopComponent.getInfo().setText("Hello, " + user.getReader().getFirstname());
+                        
+                        guiApp.getContentPane().remove(guestComponent);
+                        guiApp.getContentPane().remove(guestButtonsComponent);
+                        
+                        
+                        //ERROR
+                        JTabbedPane jTabbedPane = new JTabbedPane();
+                        jTabbedPane.setPreferredSize(new Dimension(width_windows,height_window));
+                        jTabbedPane.setMinimumSize(jTabbedPane.getPreferredSize());
+                        jTabbedPane.setMaximumSize((jTabbedPane.getPreferredSize()));
+                        if("READER".equals(GuiApp.role)){
+                            TabReaderComponent tabReaderComponent = new TabReaderComponent(GuiApp.width_windows);
+                            jTabbedPane.addTab("Читатель", tabReaderComponent);
+                        }else if("MANAGER".equals(GuiApp.role)){
+                            TabReaderComponent tabReaderComponent = new TabReaderComponent(GuiApp.width_windows);
+                            jTabbedPane.addTab("Читатель", tabReaderComponent);
+                            TabManagerComponent tabLibrarianComponent = new TabManagerComponent(GuiApp.width_windows);
+                            jTabbedPane.addTab("Библиотекарь", tabLibrarianComponent);
+                        }else if("ADMINISTRATOR".equals(GuiApp.role)){
+                            TabReaderComponent tabReaderComponent = new TabReaderComponent(GuiApp.width_windows);
+                            jTabbedPane.addTab("Читатель", tabReaderComponent);
+                            TabManagerComponent tabLibrarianComponent = new TabManagerComponent(GuiApp.width_windows);
+                            jTabbedPane.addTab("Библиотекарь", tabLibrarianComponent);
+                            TabDirectorComponent tabDirectorComponent = new TabDirectorComponent(GuiApp.width_windows);
+                            jTabbedPane.addTab("Директор", tabDirectorComponent);
+                        }
+                        
+                        guiApp.getContentPane().add(jTabbedPane);
+                        guiApp.repaint();
+                        guiApp.revalidate();
+                        
                         dialogLogin.setVisible(false);
                         dialogLogin.dispose();
                     }
@@ -177,32 +214,37 @@ public class GuiApp extends JFrame{//error
                 guiApp.getContentPane().remove(guestComponent);
                 tabAddReaderComponents = new TabAddReaderComponents(GuiApp.width_windows);
                 guiApp.getContentPane().add(tabAddReaderComponents);
-                //guiApp.repaint();
+                guiApp.repaint();
                 guiApp.revalidate();
             }
         });
-        this.add(guestComponent);
-        
-                
-        
+        if(GuiApp.user == null){
+            this.add(guestComponent);
+            
+        }
         
 //        JTabbedPane jTabbedPane = new JTabbedPane();
 //        this.setPreferredSize(new Dimension(width_windows,height_window));
 //        this.setMinimumSize(jTabbedPane.getPreferredSize());
 //        this.setMaximumSize((jTabbedPane.getPreferredSize()));
 //        this.getContentPane().add(jTabbedPane);
+//        guiApp.getContentPane().add(jTabbedPane);
+//        guiApp.getContentPane().remove(infoTopComponent);
 //        
-//        TabReaderComponent tabReaderComponent = new TabReaderComponent(this.getWidth());
-//        jTabbedPane.addTab("Читатель", tabReaderComponent);
+//        if("READER".equals(GuiApp.role)){
+//            TabReaderComponent tabReaderComponent = new TabReaderComponent(this.getWidth());
+//            jTabbedPane.addTab("Читатель", tabReaderComponent);
+//        }
 //        
-//        TabLibrarianComponent tabLibrarianComponent = new TabLibrarianComponent(this.getWidth());
+//        else if(){
+//        TabManagerComponent tabLibrarianComponent = new TabManagerComponent(this.getWidth());
 //        jTabbedPane.addTab("Библиотекарь", tabLibrarianComponent);
 //        this.getContentPane().add(jTabbedPane);
+//        }
 //        
 //        TabDirectorComponent tabDirectorComponent = new TabDirectorComponent(this.getWidth());
 //        jTabbedPane.addTab("Директор", tabDirectorComponent);
     }
-    
     public static void main(String[] args) {//psvm + tab
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {

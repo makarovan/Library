@@ -3,9 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomponents;
+package app.mycomponents.reader;
 
 import app.GuiApp;
+import app.mycomponents.ButtonComponent;
+import app.mycomponents.ButtonComponent;
+import app.mycomponents.CaptionComponent;
+import app.mycomponents.CaptionComponent;
+import app.mycomponents.ComboBoxReadersComponents;
+import app.mycomponents.ComboBoxReadersComponents;
+import app.mycomponents.InfoComponent;
+import app.mycomponents.InfoComponent;
+import app.mycomponents.ListBooksComponent;
+import app.mycomponents.ListBooksComponent;
 import entity.Book;
 import entity.History;
 import entity.Reader;

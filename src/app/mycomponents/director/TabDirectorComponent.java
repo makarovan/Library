@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package app.mycomponents;
+package app.mycomponents.director;
 
+import app.mycomponents.ButtonComponent;
+import app.mycomponents.CaptionComponent;
+import app.mycomponents.ComboBoxReadersComponents;
+import app.mycomponents.EditorComponent;
+import app.mycomponents.InfoComponent;
 import entity.Author;
 import entity.Book;
 import entity.Reader;
