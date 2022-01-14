@@ -11,7 +11,10 @@ import app.mycomponents.ComboBoxReadersComponents;
 import app.mycomponents.EditorComponent;
 import app.mycomponents.InfoComponent;
 import entity.Reader;
+import entity.User;
 import facade.ReaderFacade;
+import facade.UserFacade;
+import facade.UserRolesFacade;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -37,6 +40,8 @@ class TabEditReaderComponents extends JPanel{
     private EditorComponent readerNameComponent;
     private EditorComponent readerLastnameComponent;
     private EditorComponent readerPhoneComponent;
+    private EditorComponent readerLoginComponent;
+    private EditorComponent readerPasswordComponent;
     private ButtonComponent buttonComponent;
     private Reader reader;
     
@@ -55,25 +60,8 @@ class TabEditReaderComponents extends JPanel{
         infoComponent = new InfoComponent("", widthPanel, 25);
         this.add(infoComponent);
         this.add(Box.createRigidArea(new Dimension(0,15)));
-        //comboBoxReadersComponents.getComboBox().setSelectedIndex(-1);
-//        this.add(comboBoxReadersComponents);
-//        
-//        
-//        
-//        comboBoxReadersComponents.getComboBox().addItemListener(new ItemListener() {
-//            @Override
-//            public void itemStateChanged(ItemEvent ie) {
-//                reader = (Reader) ie.getItem();//инициировали
-//                //вытаскиваем значения полей, чтобы вставить 
-//                readerNameComponent.getEditor().setText(reader.getFirstname());   
-//                readerLastnameComponent.getEditor().setText(reader.getLastname());
-//                readerPhoneComponent.getEditor().setText(reader.getPhone());
-//            }
-//        });
-//        
-//        this.add(Box.createRigidArea(new Dimension(0, 10)));
+
         comboBoxReadersComponents = new ComboBoxReadersComponents("Читатели", widthPanel, 30, 300);
-//        comboBoxReadersComponents.getComboBox().setModel(comboBoxModel);
         comboBoxReadersComponents.getComboBox().setSelectedIndex(-1);
         comboBoxReadersComponents.getComboBox().addItemListener(new ItemListener() {
             @Override
@@ -95,6 +83,11 @@ class TabEditReaderComponents extends JPanel{
         readerPhoneComponent = new EditorComponent("Номер телефона читателя", widthPanel, 31, 195);
         this.add(readerPhoneComponent);
         
+        readerLoginComponent = new EditorComponent("Логин читателя", widthPanel, 31, 195);
+        this.add(readerLoginComponent);
+        
+        readerPasswordComponent = new EditorComponent("Пароль читателя", widthPanel, 31, 195);
+        this.add(readerPasswordComponent);
         
         this.add(Box.createRigidArea((new Dimension(0,15))));
         buttonComponent = new ButtonComponent("Изменить данные читателя", widthPanel, 35, 5, 300);
@@ -124,7 +117,25 @@ class TabEditReaderComponents extends JPanel{
                 }
                 reader.setPhone(readerPhoneComponent.getEditor().getText());
                 
+                User user = new User();
+                if(readerLoginComponent.getEditor().getText().isEmpty()){
+                   infoComponent.getInfo().setText("введите логин читателя");
+                   return;
+                }
+                user.setLogin(readerLoginComponent.getEditor().getText());
+                
+                if(readerPasswordComponent.getEditor().getText().isEmpty()){
+                   infoComponent.getInfo().setText("введите пароль читателя");
+                   return;
+                }
+                user.setPassword(readerPasswordComponent.getEditor().getText());
+                
                 ReaderFacade readerFacade = new ReaderFacade();
+                UserFacade userFacade = new UserFacade();
+                user.setReader(reader);
+                userFacade.create(user);
+                UserRolesFacade userRolesFacade = new UserRolesFacade();
+                userRolesFacade.setRole("READER", user);
                 try{
                     readerFacade.edit(reader);
                     infoComponent.getInfo().setText("Читатель успешно изменен");     
@@ -132,6 +143,8 @@ class TabEditReaderComponents extends JPanel{
                     readerNameComponent.getEditor().setText("");
                     readerLastnameComponent.getEditor().setText("");
                     readerPhoneComponent.getEditor().setText("");
+                    readerLoginComponent.getEditor().setText("");
+                    readerPasswordComponent.getEditor().setText("");
                 }catch(Exception e){
                     infoComponent.getInfo().setText("читателя изменить не удалось");      
                 }

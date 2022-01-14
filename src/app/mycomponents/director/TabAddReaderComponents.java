@@ -13,6 +13,7 @@ import app.mycomponents.InfoComponent;
 import entity.Reader;
 import entity.Role;
 import entity.User;
+import entity.UserRoles;
 import facade.ReaderFacade;
 import facade.RoleFacade;
 import facade.UserFacade;
@@ -113,11 +114,11 @@ public class TabAddReaderComponents extends JPanel{
                 user.setPassword(passwordComponent.getEditor().getText());
                 
                 ReaderFacade readerFacade = new ReaderFacade();
-                UserFacade userFacade = new UserFacade();
                 readerFacade.create(reader);
                 user.setReader(reader);
+                UserFacade userFacade = new UserFacade();
                 userFacade.create(user);
-                //error
+                //error на добавляет пользователя в список userroles
                 UserRolesFacade userRolesFacade = new UserRolesFacade();
                 userRolesFacade.setRole("READER", user);
                 

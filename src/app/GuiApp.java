@@ -48,11 +48,14 @@ import javax.swing.JTabbedPane;
 public class GuiApp extends JFrame{//error
     public static final int width_windows = 600;
     public static final int height_window = 450;
-    private static User user;
+    public static User user;
     private static String role;
     private InfoComponent infoTopComponent;
     private GuestComponent guestComponent;
     private TabAddReaderComponents tabAddReaderComponents;
+    private TabReaderComponent tabReaderComponent;
+    private TabManagerComponent tabManagerComponent;
+    private TabDirectorComponent tabDirectorComponent;
     private GuestButtonsComponent guestButtonsComponent;
     private GuiApp guiApp = this;
     private UserFacade userFacade = new UserFacade();
@@ -163,43 +166,39 @@ public class GuiApp extends JFrame{//error
                         //пользователь тот за кого себя выдает, устнавливаем разрешения
                         String role = userRolesFacade.topRole(user);
                         GuiApp.role = role;
-                        infoTopComponent.getInfo().setText("Hello, " + user.getReader().getFirstname());
-                        
+                        infoTopComponent.getInfo().setText("Hello "+user.getReader().getFirstname());
                         guiApp.getContentPane().remove(guestComponent);
                         guiApp.getContentPane().remove(guestButtonsComponent);
                         
                         
-                        //ERROR
                         JTabbedPane jTabbedPane = new JTabbedPane();
                         jTabbedPane.setPreferredSize(new Dimension(width_windows,height_window));
                         jTabbedPane.setMinimumSize(jTabbedPane.getPreferredSize());
-                        jTabbedPane.setMaximumSize((jTabbedPane.getPreferredSize()));
+                        jTabbedPane.setMaximumSize(jTabbedPane.getPreferredSize());
+                        
                         if("READER".equals(GuiApp.role)){
-                            TabReaderComponent tabReaderComponent = new TabReaderComponent(GuiApp.width_windows);
+                            tabReaderComponent = new TabReaderComponent(GuiApp.width_windows);
                             jTabbedPane.addTab("Читатель", tabReaderComponent);
                         }else if("MANAGER".equals(GuiApp.role)){
-                            TabReaderComponent tabReaderComponent = new TabReaderComponent(GuiApp.width_windows);
+                            tabReaderComponent = new TabReaderComponent(GuiApp.width_windows);
                             jTabbedPane.addTab("Читатель", tabReaderComponent);
-                            TabManagerComponent tabLibrarianComponent = new TabManagerComponent(GuiApp.width_windows);
-                            jTabbedPane.addTab("Библиотекарь", tabLibrarianComponent);
+                            tabManagerComponent = new TabManagerComponent(GuiApp.width_windows);
+                            jTabbedPane.addTab("Библиотекарь", tabManagerComponent);
                         }else if("ADMINISTRATOR".equals(GuiApp.role)){
-                            TabReaderComponent tabReaderComponent = new TabReaderComponent(GuiApp.width_windows);
+                            tabReaderComponent = new TabReaderComponent(GuiApp.width_windows);
                             jTabbedPane.addTab("Читатель", tabReaderComponent);
-                            TabManagerComponent tabLibrarianComponent = new TabManagerComponent(GuiApp.width_windows);
-                            jTabbedPane.addTab("Библиотекарь", tabLibrarianComponent);
-                            TabDirectorComponent tabDirectorComponent = new TabDirectorComponent(GuiApp.width_windows);
+                            tabManagerComponent = new TabManagerComponent(GuiApp.width_windows);
+                            jTabbedPane.addTab("Библиотекарь", tabManagerComponent);
+                            tabDirectorComponent = new TabDirectorComponent(GuiApp.width_windows);
                             jTabbedPane.addTab("Директор", tabDirectorComponent);
                         }
-                        
                         guiApp.getContentPane().add(jTabbedPane);
                         guiApp.repaint();
                         guiApp.revalidate();
-                        
                         dialogLogin.setVisible(false);
                         dialogLogin.dispose();
                     }
                 });
-                
                 dialogLogin.pack();
                 dialogLogin.setVisible(true);
                 
@@ -247,6 +246,7 @@ public class GuiApp extends JFrame{//error
     }
     public static void main(String[] args) {//psvm + tab
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new GuiApp().setVisible(true);//show window
             } //project properties - run - browse main class - guiapp

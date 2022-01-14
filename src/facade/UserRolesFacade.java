@@ -32,9 +32,9 @@ public class UserRolesFacade extends AbstractFacade<UserRoles>{
         return em;
     }
 
-    public String topRole(User user) {//error
+     public String topRole(User user) {
         try {
-            List<String> roles = em.createQuery("SELECT ur.roleName FROM UserRoles ur WHERE ur.user = :user")
+            List<String> roles = em.createQuery("SELECT ur.role.roleName FROM UserRoles ur WHERE ur.user = :user")
                     .setParameter("user", user)
                     .getResultList();
             if(roles.contains("ADMINISTRATOR")){
@@ -51,8 +51,9 @@ public class UserRolesFacade extends AbstractFacade<UserRoles>{
         }
     }
     
-    public void setRole(String roleName, User newUser) throws Exception{
-        UserRoles userRoles = new UserRoles();
+     //dont work
+    public void setRole(String roleName, User newUser){
+        UserRoles userRoles= new UserRoles();
         userRoles.setUser(newUser);
         try {
             this.removeRole(newUser);
@@ -73,7 +74,7 @@ public class UserRolesFacade extends AbstractFacade<UserRoles>{
                 this.create(userRoles);
             }
         } catch (Exception e) {
-            throw new Exception("Не удалось установить роль пользователю " + newUser.getLogin());
+            new Exception("Не удалось установить роль пользователю "+ newUser.getLogin());
         }
     }
     
@@ -83,4 +84,14 @@ public class UserRolesFacade extends AbstractFacade<UserRoles>{
                 .executeUpdate();
     }
     
+    public boolean isRole(String roleName, User user){
+        List<String> listRolesForUser = em.createQuery("SELECT ur.role.roleName FROM UserRoles ur WHERE ur.user = :user")
+                .setParameter("user", user)
+                .getResultList();
+        if(listRolesForUser.contains(roleName)){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
